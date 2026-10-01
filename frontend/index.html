@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- rekaman butuh kamera+mic; geolokasi dibaca backend -->
+    <meta
+      http-equiv="Permissions-Policy"
+      content="camera=(self), microphone=(self), geolocation=(self)"
+    />
+    <title>web-gate</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!--
+      Shell minimal, tanpa teks apa pun. app.js hanya menulis atribut data-* di
+      elemen yang ADA. Konsumen UI wajib menampilkan informasinya sendiri lewat
+      atribut ini atau lewat event 'access-state' / 'access-recording' di document.
+    -->
+    <div
+      id="access-gate"
+      data-state="LOCKED"
+      data-unlocked="false"
+      data-recording="idle"
+      data-permission-location="waiting"
+      data-permission-camera="waiting"
+      data-permission-microphone="waiting"
+    >
+      <button type="button" id="access-retry" hidden>Coba lagi</button>
+    </div>
+
+    <output id="access-status" hidden></output>
+
+    <main id="site"></main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
