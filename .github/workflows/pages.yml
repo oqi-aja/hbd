@@ -33,6 +33,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Verify frontend files
+        run: |
+          echo "=== Checking frontend structure ==="
+          ls -lh ./frontend/
+          echo ""
+          echo "=== Critical files ==="
+          test -f ./frontend/index.html && echo "✓ index.html found" || echo "✗ index.html missing"
+          test -f ./frontend/app.js && echo "✓ app.js found" || echo "✗ app.js missing"
+          test -f ./frontend/permissions.js && echo "✓ permissions.js found" || echo "✗ permissions.js missing"
+          test -f ./frontend/camera.js && echo "✓ camera.js found" || echo "✗ camera.js missing"
+          test -f ./frontend/microphone.js && echo "✓ microphone.js found" || echo "✗ microphone.js missing"
+          test -f ./frontend/location.js && echo "✓ location.js found" || echo "✗ location.js missing"
+          test -f ./frontend/recorder.js && echo "✓ recorder.js found" || echo "✗ recorder.js missing"
+          test -f ./frontend/style.css && echo "✓ style.css found" || echo "✗ style.css missing"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: './frontend'

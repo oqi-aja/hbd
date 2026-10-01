@@ -117,12 +117,18 @@ export function createGate(adapters) {
     try {
       for (const step of STEPS) {
         // Sudah diberikan sebelumnya -> jangan panggil prompt browser lagi.
-        if (perm[step.key] === PERM.GRANTED) continue
+        if (perm[step.key] === PERM.GRANTED) {
+          console.log(`[gate] ${step.key} already granted, skipping`)
+          continue
+        }
 
+        console.log(`[gate] requesting ${step.key}...`)
         setState(step.requesting)
         try {
           await adapters[step.key]()
+          console.log(`[gate] ${step.key} granted`)
         } catch (err) {
+          console.warn(`[gate] ${step.key} denied:`, err.message)
           perm[step.key] =
             err && err.code === 'unavailable' ? PERM.UNAVAILABLE : PERM.DENIED
           error = err && err.message ? err.message : `${step.label} permission ditolak`
@@ -136,6 +142,7 @@ export function createGate(adapters) {
       }
       unlocked = true
       reason = null
+      console.log('[gate] all permissions granted, ACCESS_GRANTED')
       setState(STATE.ACCESS_GRANTED)
     } finally {
       running = false

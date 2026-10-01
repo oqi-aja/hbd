@@ -16,6 +16,8 @@ import { createRecorder, combineStreams, RECORDER_STATE } from './recorder.js'
 import { sendLocation, uploadRecording } from './api.js'
 import { sessionId } from './session.js'
 
+console.log('[app] module loaded, sessionId:', sessionId)
+
 const $ = (id) => document.getElementById(id)
 
 const gateEl = $('access-gate')
@@ -110,6 +112,7 @@ async function startSession() {
 }
 
 gate.subscribe((snap) => {
+  console.log('[gate] state:', snap.state, 'unlocked:', snap.unlocked, 'perm:', snap.perm)
   paint(snap)
   broadcast('access-state', snap)
   if (snap.unlocked) startSession()
@@ -137,4 +140,5 @@ window.addEventListener('pagehide', () => {
   microphone.stopStream()
 })
 
+console.log('[app] starting permission gate...')
 gate.run()
